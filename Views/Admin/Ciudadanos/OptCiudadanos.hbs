@@ -1,0 +1,55 @@
+{{!--Option Ciudadanos --}}
+<main>
+    <a href="/admin/opcciones" style="text-decoration: none;">
+        <button class="btn btn-primary px-5 mt-2 py-1 ms-2">
+            <img src="/assets/img/btn-regresar.png">
+        </button>
+    </a>
+    <div class="container-lg pb-4 mt-2" style="min-height: 80vh;">
+        <h1 class="text-center p-2">CIUDADANOS</h1>
+        <a href="/admin/Opcciones/ciudadanos/agregar">
+            <button class="btn btn-success p-2">Nuevo Ciudadano</button>
+        </a>
+        <table class="mt-3 row mx-0">
+            <tbody class="col row m-0 p-0 border-bottom border-dark">
+                <tr class="col-12 row bg-secondary m-0 p-0 fs-3">
+                    <th class="col-2 border border-2 border-dark py-2">Dodumendo de Identidad</th>
+                    <th class="col-2 border border-2 border-dark py-2">Nombre</th>
+                    <th class="col-2 border border-2 border-dark py-2">Apellido</th>
+                    <th class="col-2 border border-2 border-dark py-2">Email</th>
+                    <th class="col-2 border border-2 border-dark py-2">Estado</th>
+                    <th class="col-2 border border-2 border-dark py-2">Acciones</th>
+                </tr>
+                {{#each ciudadanos as |ciudadano|}}
+                <tr class="col-12 row m-0 p-0 fs-5">
+                    <th class="col-2 border border-2 border-dark py-2" style="overflow: hidden;">
+                        {{ciudadano.DocumentoDeIdentidad}}</th>
+                    <th class="col-2 border border-2 border-dark py-2" style="overflow: hidden;">{{ciudadano.Nombre}}
+                    </th>
+                    <th class="col-2 border border-2 border-dark py-2" style="overflow: hidden;">{{ciudadano.Apellido}}
+                    </th>
+                    <th class="col-2 border border-2 border-dark py-2" style="overflow: hidden;">{{ciudadano.Email}}
+                    </th>
+                    <th class="col-2 border border-2 border-dark py-2" style="overflow: hidden;">{{#if
+                        ciudadano.Estado}}Activo{{else}}Inactivo{{/if}}
+                    </th>
+                    <th class="col-2  border border-2 border-dark py-2  d-flex justify-content-center"
+                        style="overflow: hidden;">
+                        {{#if ciudadano.Estado}}
+                        <a href="/admin/opcciones/ciudadanos/editar{{ciudadano.DocumentoDeIdentidad}}"><Button
+                                class="btn btn-warning">Editar</Button></a>
+                        <a {{#if ../buttonDesactivarIsActive}}
+                            href="/admin/opcciones/ciudadanos/changeestado{{ciudadano.DocumentoDeIdentidad}}"
+                            {{/if}}><button class="btn btn-danger ms-2" {{#if
+                                ../buttonDesactivarIsActive}}{{else}}disabled{{/if}}>Desactivar</button></a>
+                        {{else}}
+                        <a href="/admin/opcciones/ciudadanos/changeestado{{ciudadano.DocumentoDeIdentidad}}"><button
+                                class="btn btn-success px-5 ms-2">Activar</button></a>
+                        {{/if}}
+                    </th>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</main>

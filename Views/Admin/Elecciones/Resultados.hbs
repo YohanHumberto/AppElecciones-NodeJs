@@ -1,0 +1,39 @@
+<main>
+    <div class="container p-5">
+        <div>
+            {{#each NewPuesto}}
+            <table class="w-100 border border-dark mb-2">
+                <h1 class="p-2 h3 text-center bg-dark text-white mb-0">{{Nombre}}</h1>
+                <thead class="alert-secondary p-3 w-100 fs-5">
+                    <tr class="w-100 m-0">
+                        <th class="p-3 border border-dark border-2">Candidatos</th>
+                        <th class="p-3 border border-dark border-2">Cantidad de Votos</th>
+                        <th class="p-3 border border-dark border-2">Porcentaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each candidatos}}
+                    {{#if (IsEqual puestoElectivoId ../Id) }}
+                    <tr class="border border-dark border-2">
+                        <th class="p-3 border border-dark border-2">{{Nombre}}</th>
+                        <th class="p-3 border border-dark border-2">{{CantidadDeVotos}}</th>
+                        <th class="p-3 border border-dark border-2">
+                            {{Percentage CantidadDeVotos ../TotalVotosPorPuesto}}%
+                        </th>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+
+                    <tr class="border border-dark border-2 alert-info">
+                        <th class="p-3 border border-dark border-2"><b>Totales</b></th>
+                        <th class="p-3 border border-dark border-2">{{TotalVotosPorPuesto}}</th>
+                        <th class="p-3 border border-dark border-2">100%</th>
+                    </tr>
+                </tbody>
+            </table>
+            {{/each}}
+
+        </div>
+
+    </div>
+</main>

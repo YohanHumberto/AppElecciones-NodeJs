@@ -1,0 +1,58 @@
+<main>
+    <a href="/admin/opcciones/candidatos">
+        <button class="btn btn-primary mt-2 px-5 ms-2">
+            <img src="/assets/img/btn-regresar.png">
+        </button>
+    </a>
+    <div class="container d-flex justify-content-center">
+        <form class="border shadow p-4 border border-dark w-50" enctype="multipart/form-data"
+            action="{{#if EditIsActive}}/admin/opcciones/candidatos/editar{{candidato.Id}}{{else}}/admin/opcciones/candidatos/agregar{{/if}}"
+            method="post">
+            <h2 class="text-center mb-3">
+                {{#if EditIsActive}}Form Editar{{else}}Form Crear{{/if}}
+            </h2>
+            <label for="">Nombre</label>
+            <input class="form-control my-2" type="text" name="Nombre" placeholder="Nombre" required="required"
+                value="{{#if EditIsActive}}{{candidato.Nombre}}{{/if}}">
+            <label for="">Apellido</label>
+            <input class="form-control my-2" type="text" name="Apellido" placeholder="Apellido" required="required"
+                value="{{#if EditIsActive}}{{candidato.Apellido}}{{/if}}">
+
+            <label for="">Partido</label>
+            <select class="form-control my-2" name="PartidoId" required="required">
+                {{#each partidos}}
+                <option value="{{Id}}" {{#if (IsEqual Id candidato.PartidoId)}}selected{{/if}}>
+                    {{Nombre}}
+                </option>
+                {{/each}}
+            </select>
+
+            <label for="">Puesto</label>
+            <select class="form-control my-2" name="puestoElectivoId" required="required">
+                {{#each puestos}}
+                <option value="{{Id}}" {{#if (IsEqual Id candidato.puestoElectivoId)}}selected{{/if}}>
+                    {{Nombre}}</option>
+                {{/each}}
+            </select>
+
+
+            <label for="">Foto</label>
+            <input class="form-control" type="file" name="Image" required="required">
+
+            <label for="">Estado</label>
+            <select class="form-control my-2" name="Estado" required="required">
+                <option class="form-control" value="true" selected>Activo</option>
+            </select>
+
+            <div class="d-flex justify-content-end">
+                <button type="reset" class="btn btn-warning my-3 px-5">Limpiar</button>
+                <button type="submit" class="btn btn-primary my-3 px-5 ms-2">
+                    {{#if EditIsActive}}Editar{{else}}Crear{{/if}}
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+</main>

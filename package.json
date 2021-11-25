@@ -1,0 +1,21 @@
+{
+  "name": "sistemadeelecciones",
+  "version": "1.0.0",
+  "description": "Este es uno de los proyectos finales de programacion web",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yohan Humberto Rijo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.4",
+    "multer": "^1.4.3",
+    "mysql2": "^2.3.3-rc.0",
+    "nodemailer": "^6.7.1",
+    "nodemon": "^2.0.14",
+    "sequelize": "^6.9.0",
+    "uuid": "^8.3.2"
+  }
+}

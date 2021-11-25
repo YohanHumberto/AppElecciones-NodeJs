@@ -1,0 +1,61 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/js/bootstrap/bootstrap.min.js" />
+    <script src="/assets/js/index/index.js"></script>
+    <title>{{PageTitle}}</title>
+</head>
+
+<body id="body">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">NavBar</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {{#if LoginElector.Estado}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/puestos-electorales{{LoginElector.DIdentidad}}">Puestos
+                            Electorales</a>
+                    </li>
+                    {{else}}
+                    {{#if Login}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/opcciones">Admin Options</a>
+                    </li>
+                    {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {{/if}}
+                    {{/if}}
+                </ul>
+            </div>
+            {{#if LoginElector.Estado}}
+            <a class="nav-link active" aria-current="page" href="/logout-elector">
+                <button class="btn btn-danger">Logout Elector</button>
+            </a>
+            {{else}}
+            {{#if Login}}
+            <a class="nav-link active" aria-current="page" href="/admin/logout-admin">
+                <button class="btn btn-danger">Logout Admin</button>
+            </a>
+            {{else}}
+            <a class="nav-link active" aria-current="page" href="/admin/login">
+                <button class="btn btn-primary">Admin Login</button>
+            </a>
+            {{/if}}
+            {{/if}}
+
+        </div>
+    </nav>
+
+    {{{body}}}
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<main>
+    <a href="/admin/opcciones/partidos">
+        <button class="btn btn-primary mt-2 px-5 ms-2">
+            <img src="/assets/img/btn-regresar.png">
+        </button>
+    </a>
+    <div class="container mt-5 d-flex justify-content-center">
+        <form class="border shadow p-5 border border-dark w-50" enctype="multipart/form-data" action="" method="post">
+            <h2 class="text-center mb-3">{{#if EditIsActive}}Editar Partido{{else}}Agregar Partido{{/if}}</h2>
+            <label for="">Nombre</label>
+            <input class="form-control my-2" type="text" name="Nombre" placeholder="Nombre" required="required"
+                value="{{#if EditIsActive}}{{partido.Nombre}}{{/if}}">
+            <label for="">Descripcion</label>
+            <input class="form-control my-2" type="text" name="Descripcion" placeholder="Descripcion"
+                required="required" value="{{#if EditIsActive}}{{partido.Descripcion}}{{/if}}">
+            <label for="">Logo del partido</label>
+            <input class="form-control my-2" type="file" name="Image">
+            <label for="">Estado</label>
+            <select class="form-control my-2" name="Estado" required="required">
+                <option class="form-control" value="true" selected>Activo</option>
+            </select>
+            <div class="d-flex justify-content-end">
+                <button type="reset" class="btn btn-warning my-3 px-5">Limpiar</button>
+                <button type="submit" class="btn btn-primary my-3 px-5 ms-2">{{#if
+                    EditIsActive}}Editar{{else}}Crear{{/if}}</button>
+            </div>
+        </form>
+    </div>
+</main>
