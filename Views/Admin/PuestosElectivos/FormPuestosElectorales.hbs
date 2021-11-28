@@ -5,11 +5,6 @@
         </button>
     </a>
     <div class="container mt-5 d-flex justify-content-center">
-        {{#if Alert}}
-        <div class="col-8 alert alert-danger fs-4">
-            <b>Alert!!</b><span class="ms-3">{{AlertMessage}}</span>
-        </div>
-        {{/if}}
         <form class="border shadow p-5 border border-dark w-50"
             action="{{#if EditIsActive}}/admin/opcciones/puesto-electivo/editar{{puestoElectivo.Id}}{{else}}/admin/opcciones/puesto-electivo/agregar{{/if}}"
             method="post">

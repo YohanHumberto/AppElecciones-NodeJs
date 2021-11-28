@@ -6,20 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/js/bootstrap/bootstrap.min.js" />
+
     <script src="/assets/js/index/index.js"></script>
     <title>{{PageTitle}}</title>
 </head>
 
 <body id="body">
 
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">NavBar</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    {{#if LoginElector.Estado}}
+                    {{#if LoginElector}}
                     <li class="nav-item">
-                        <a class="nav-link" href="/puestos-electorales{{LoginElector.DIdentidad}}">Puestos
+                        <a class="nav-link" href="/puestos-electorales{{Elector.DocumentoDeIdentidad}}">Puestos
                             Electorales</a>
                     </li>
                     {{else}}
@@ -35,7 +37,7 @@
                     {{/if}}
                 </ul>
             </div>
-            {{#if LoginElector.Estado}}
+            {{#if LoginElector}}
             <a class="nav-link active" aria-current="page" href="/logout-elector">
                 <button class="btn btn-danger">Logout Elector</button>
             </a>
@@ -54,7 +56,30 @@
         </div>
     </nav>
 
-    {{{body}}}
+
+    <main>
+
+        {{#if hasErrorMessages}}
+        <div class="d-flex justify-content-center mt-5 w-75 m-auto">
+            <div id="alert" class="col-8 alert alert-danger fs-4">
+                <b>Alerts!!</b><span class="ms-3">
+                    {{errorMessages}}
+                </span>
+                <img onload="disableAlert()"
+                    src="https://d500.epimg.net/cincodias/imagenes/2018/11/13/lifestyle/1542113135_776401_1542116070_noticia_normal.jpg"
+                    class="d-none">
+            </div>
+        </div>
+        {{/if}}
+
+        {{{body}}}
+    </main>
+
+
+    <script src="/assets/js/bootstrap/bootstrap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 
 </body>
 

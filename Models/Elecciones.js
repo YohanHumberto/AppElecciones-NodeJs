@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-const connection = require('../Util/DB/connection');
+const { sequelize } = require('../Util/DB/connection');
 
-module.exports.Elecciones = connection.db.define('elecciones', {
+const Elecciones = sequelize.define('elecciones', {
     Id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,3 +22,5 @@ module.exports.Elecciones = connection.db.define('elecciones', {
         allowNull: false,
     }
 });
+
+module.exports = Elecciones;

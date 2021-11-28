@@ -4,6 +4,8 @@ const app = express();
 const expresshbs = require('express-handlebars');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const session = require("express-session");
+const flash = require('connect-flash');
 
 const port = process.env.PORT || 3000;
 
@@ -14,10 +16,9 @@ const routeAdmin = require('./Routes/Admin');
 const routeElector = require('./Routes/Elector');
 const ErorController = require('./Controllers/404Controller')
 
-const DATABASE = require('./Util/DB/connection');
-const { Candidatos } = require('./Models/Candidatos');
-const { Partidos } = require('./Models/Partidos');
-const { PuestoElectivo } = require('./Models/PuestoElectivo');
+const { sequelize } = require('./Util/DB/connection');
+const Relaciones = require('./Util/DB/Relaciones');
+
 
 
 const fileStorage = multer.diskStorage({
@@ -28,14 +29,6 @@ const fileStorage = multer.diskStorage({
         cb(null, uuidv4() + "-" + file.originalname);
     },
 });
-
-
-app.use(express.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage }).single("Image"));
-
-app.use(express.static(path.join(__dirname, 'Public')));
-app.use("/Images", express.static(path.join(__dirname, 'Images')));
-
 
 //engine/*  */
 app.engine("hbs", expresshbs({
@@ -48,17 +41,31 @@ app.engine("hbs", expresshbs({
 app.set("view engine", "hbs");
 app.set("views", "views");
 
+app.use(express.urlencoded({ extended: false }));
+app.use(multer({ storage: fileStorage }).single("Image"));
+
+app.use(express.static(path.join(__dirname, 'Public')));
+app.use("/Images", express.static(path.join(__dirname, 'Images')));
+
+app.use(session({ secret: "anything", resave: true, saveUninitialized: false }));
+app.use(flash());
+
+app.use((req, res, next) => {
+    const errors = req.flash("errors");
+    res.locals.Login = req.session.AdminIsAuthenticated;
+    res.locals.LoginElector = req.session.ElectorIsAuthenticated;
+    res.locals.Elector = req.session.Elector;
+    res.locals.errorMessages = errors[0];
+    res.locals.hasErrorMessages = errors.length > 0;
+    next();
+});
+
+
 //DB CONFIGURATION
-
-Candidatos.belongsTo(Partidos, { constraint: true, onDelete: "CASCADE" });
-Candidatos.belongsTo(PuestoElectivo, { constraint: true, onDelete: "CASCADE" });
-PuestoElectivo.hasMany(Candidatos);
-Partidos.hasMany(Candidatos);
-
-DATABASE.conectar();
+Relaciones();
+sequelize.sync().then(() => { console.log('Connection sucessfully') }).catch(e => console.log(e));
 
 //Routes
-
 app.use('/admin', routeAdmin);
 app.use(routeElector);
 app.use('/', ErorController.GetNotFount)

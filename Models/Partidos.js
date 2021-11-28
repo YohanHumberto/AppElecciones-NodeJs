@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
-const connection = require('../Util/DB/connection');
+const { sequelize } = require('../Util/DB/connection');
 
-module.exports.Partidos = connection.db.define('partidos', {
+const Partidos = sequelize.define('partidos', {
     Id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -25,5 +25,6 @@ module.exports.Partidos = connection.db.define('partidos', {
         type: DataTypes.BOOLEAN,
          allowNull: false,
     }
-
 });
+
+module.exports = Partidos;

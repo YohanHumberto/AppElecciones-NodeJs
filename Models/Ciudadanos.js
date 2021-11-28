@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 
-const connection = require('../Util/DB/connection');
+const { sequelize } = require('../Util/DB/connection');
 
-module.exports.Ciudadanos = connection.db.define('ciudadanos', {
+
+const Ciudadanos = sequelize.define('ciudadanos', {
     DocumentoDeIdentidad: {
         type: DataTypes.TEXT,
         primaryKey: true,
@@ -10,19 +11,21 @@ module.exports.Ciudadanos = connection.db.define('ciudadanos', {
     },
     Nombre: {
         type: DataTypes.TEXT,
-         allowNull: false,
+        allowNull: false,
     },
     Apellido: {
         type: DataTypes.TEXT,
-         allowNull: false,
+        allowNull: false,
     },
     Email: {
         type: DataTypes.TEXT,
-         allowNull: false,
+        allowNull: false,
     },
     Estado: {
         type: DataTypes.BOOLEAN,
-         allowNull: false,
+        allowNull: false,
     }
 
 });
+
+module.exports = Ciudadanos;

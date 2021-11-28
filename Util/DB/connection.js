@@ -1,16 +1,8 @@
 const { Sequelize } = require('sequelize');
+const path = require("path");
 
-module.exports.db = new Sequelize('bd_sistema_de_elecciones', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    //  logging: false
+module.exports.sequelize = new Sequelize("sqlite::memory:", {
+    dialect: "sqlite",
+    storage: path.join(path.dirname(require.main.filename), "Util", "DB", "SistemaElecciones.sqlite"),
 });
 
-module.exports.conectar = async () => {
-    try {
-        await this.db.authenticate();
-        console.log('Conexion a BD exitosa');
-    } catch (error) {
-        console.log(error);
-    }
-}
