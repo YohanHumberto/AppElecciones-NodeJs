@@ -6,6 +6,8 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const session = require("express-session");
 const flash = require('connect-flash');
+/* const csrf = require("csurf");
+const csrfProtection = csrf(); */
 
 const port = process.env.PORT || 3000;
 
@@ -48,6 +50,7 @@ app.use(express.static(path.join(__dirname, 'Public')));
 app.use("/Images", express.static(path.join(__dirname, 'Images')));
 
 app.use(session({ secret: "anything", resave: true, saveUninitialized: false }));
+/* app.use(csrfProtection); */
 app.use(flash());
 
 app.use((req, res, next) => {
@@ -57,6 +60,7 @@ app.use((req, res, next) => {
     res.locals.Elector = req.session.Elector;
     res.locals.errorMessages = errors[0];
     res.locals.hasErrorMessages = errors.length > 0;
+    /*     res.locals.csrfToken = req.csrfToken(); */
     next();
 });
 

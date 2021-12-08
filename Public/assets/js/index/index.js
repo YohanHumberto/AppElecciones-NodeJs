@@ -28,6 +28,6 @@ function activeButton(e) {
 
 function disableAlert() {
   setTimeout(() => {
-    document.getElementById('alert').remove();
+    document.getElementById('alert').parentElement.remove();
   }, 2000);
 }

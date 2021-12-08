@@ -19,9 +19,9 @@
                 value="{{#if EditIsActive}}{{candidato.Apellido}}{{/if}}">
 
             <label for="">Partido</label>
-            <select class="form-control my-2" name="PartidoId" required="required">
+            <select class="form-control my-2" name="partidoId" required="required">
                 {{#each partidos}}
-                <option value="{{Id}}" {{#if (IsEqual Id candidato.PartidoId)}}selected{{/if}}>
+                <option value="{{Id}}" {{#if (IsEqual Id candidato.partidoId)}}selected{{/if}}>
                     {{Nombre}}
                 </option>
                 {{/each}}
@@ -39,10 +39,7 @@
             <label for="">Foto</label>
             <input class="form-control" type="file" name="Image" required="required">
 
-            <label for="">Estado</label>
-            <select class="form-control my-2" name="Estado" required="required">
-                <option class="form-control" value="true" selected>Activo</option>
-            </select>
+            <input class="form-control" value="true" type="hidden" name="Estado" required="required">
 
             <div class="d-flex justify-content-end">
                 <button type="reset" class="btn btn-warning my-3 px-5">Limpiar</button>

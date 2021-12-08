@@ -20,10 +20,7 @@
             <label for="">Email</label>
             <input class="form-control my-2" type="text" name="Email" placeholder="Email" required="required"
                 value="{{ciudadano.Email}}">
-            <label for="">Estado</label>
-            <select class="form-control my-2" name="Estado" required="required">
-                <option class="form-control" value="true" selected>Activo</option>
-            </select>
+            <input class="form-control" value="true" type="hidden" name="Estado" required="required">
             <div class="d-flex justify-content-end">
                 <button type="reset" class="btn btn-warning my-3 px-5">Limpiar</button>
                 <button type="submit" class="btn btn-primary my-3 px-5 ms-2">{{#if

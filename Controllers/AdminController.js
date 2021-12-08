@@ -5,6 +5,7 @@ const Ciudadanos = require('../Models/Ciudadanos');
 const Candidatos = require('../Models/Candidatos');
 const Elecciones = require('../Models/Elecciones');
 const Votos = require('../Models/Votos');
+const { Op } = require('sequelize')
 
 
 
@@ -53,9 +54,9 @@ exports.GetOptCandidatos = async (req, res, next) => {
     if (AdminIsAuthenticated) {
         try {
             const buttonDesactivarIsActive = (await Elecciones.findAll({ where: { Estado: true } })).length > 0 ? false : true;
-            const partidosLength = (await Partidos.findAll({ where: { Estado: true } })).length;
+            const partidosLength = (await Partidos.findAll({ where: { Estado: true, Nombre: { [Op.not]: '/*bla*/' } } })).length;
             const puestosLength = (await PuestoElectivo.findAll({ where: { Estado: true } })).length;
-            const candidatos = (await Candidatos.findAll()).map(item => item.dataValues).filter(item => item.PartidoId !== -1 && item);
+            const candidatos = (await Candidatos.findAll({ where: { Nombre: { [Op.not]: 'Ninguno' } } })).map(item => item.dataValues).filter(item => item.PartidoId !== -1 && item);
             const AgregarIsActive = partidosLength > 0 && puestosLength > 0 ? true : false;
             res.render('admin/Candidatos/OptCandidatos.hbs', { PageTitle: 'Candidatos', candidatos, AgregarIsActive, buttonDesactivarIsActive });
         } catch (error) {
@@ -71,7 +72,7 @@ exports.GetFormCandidatos = async (req, res, next) => {
 
     const id = req.params.id;
     const puestos = (await PuestoElectivo.findAll({ where: { Estado: true } })).map(item => item.dataValues);
-    const partidos = (await Partidos.findAll({ where: { Estado: true } })).map(item => item.dataValues);
+    const partidos = (await Partidos.findAll({ where: { Estado: true, Nombre: { [Op.not]: '/*bla*/' } } })).map(item => item.dataValues);
     if (id) {
 
         try {
@@ -234,7 +235,7 @@ exports.GetOptPartidos = async (req, res, next) => {
 
     try {
         const buttonDesactivarIsActive = (await Elecciones.findAll({ where: { Estado: true } })).length > 0 ? false : true;
-        const partidos = (await Partidos.findAll()).map(item => item.dataValues);
+        const partidos = (await Partidos.findAll({ where: { Nombre: { [Op.not]: '/*bla*/' } } })).map(item => item.dataValues);
         res.render('admin/Partidos/OptPartidos.hbs', { PageTitle: 'Partidos', partidos, buttonDesactivarIsActive });
     } catch (error) {
         console.log(error);
@@ -298,7 +299,7 @@ exports.GetChangeEstadoPartidos = async (req, res, next) => {
         const partido = await Partidos.findByPk(id);
         if (partido) {
             if (partido.dataValues.Estado) {
-                const candidatosFromThisPartido = await Candidatos.findAll({ where: { Estado: true, PartidoId: partido.dataValues.Id } });
+                const candidatosFromThisPartido = await Candidatos.findAll({ where: { Estado: true, PartidoId: partido.dataValues.Id, Nombre: { [Op.not]: '	Ninguno' } } });
                 candidatosFromThisPartido.forEach(async (element) => {
                     const candidato = await Candidatos.findByPk(element.dataValues.Id);
                     candidato.update({ Estado: false })
@@ -362,22 +363,21 @@ exports.PostFormPuestoElectivo = async (req, res, next) => {
     } else {
 
         try {
-            const puesto = await PuestoElectivo.create(body);
-
-            setTimeout(async () => {
-                const candidatoAgregadoID = await PuestoElectivo.findOne({ where: { Nombre: body.Nombre, Estado: true } });
-                const defaultCandidato = new Candidatos({
-                    Nombre: 'Ninguno',
-                    Apellido: 'Ninguno',
-                    PartidoId: -1,
-                    puestoElectivoId: candidatoAgregadoID.dataValues.Id,
-                    Foto: 'https://elmunicipalista.net/wp-content/uploads/2019/11/23d5d064c34ff6b5b14cf3300447a5cc.jpg',
-                    Estado: true
-                });
-                await defaultCandidato.save();
-                res.redirect('/admin/opcciones/puesto-electivo');
-            }, 100);
-
+            const { dataValues: puesto } = await PuestoElectivo.create(body);
+            const partidosExist = (await Partidos.findAll({ where: { Nombre: { [Op.not]: '/*bla*/' } } })).length > 0;
+            let partido = 0;
+            !partidosExist
+                ? partido = await Partidos.create({ Nombre: 'Ninguno', Descripcion: '/*bla*/', Logo: '/*bla*/', Estado: true })
+                : partido = Partidos.findOne({ where: { Nombre: '/*bla*/' } }).dataValues;
+            await Candidatos.create({
+                Nombre: 'Ninguno',
+                Apellido: 'Ninguno',
+                partidoId: partido?.Id,
+                puestoElectivoId: puesto?.Id,
+                Foto: 'https://elmunicipalista.net/wp-content/uploads/2019/11/23d5d064c34ff6b5b14cf3300447a5cc.jpg',
+                Estado: true
+            });
+            res.redirect('/admin/opcciones/puesto-electivo');
         } catch (error) {
             console.log(error);
             res.status(500).render('Error/500.hbs', { PageTitle: 'Error 500' });
@@ -393,7 +393,7 @@ exports.GetchangeestadoPuestoElectivo = async (req, res, next) => {
         const puestoElectivo = await PuestoElectivo.findByPk(id);
         if (puestoElectivo) {
             if (puestoElectivo.dataValues.Estado) {
-                const candidatosFromThisPuesto = await Candidatos.findAll({ where: { Estado: true, puestoElectivoId: puestoElectivo.dataValues.Id } });
+                const candidatosFromThisPuesto = await Candidatos.findAll({ where: { Estado: true, puestoElectivoId: puestoElectivo.dataValues.Id, Nombre: { [Op.not]: 'Ninguno' } } });
                 candidatosFromThisPuesto.forEach(async (element) => {
                     const candidato = await Candidatos.findByPk(element.dataValues.Id);
                     candidato.update({ Estado: false })
@@ -426,12 +426,11 @@ exports.GetFormElecciones = async (req, res, next) => {
 }
 exports.PostFormElecciones = async (req, res, next) => {
     const { body } = req;
-    const { id } = req.params;
 
     try {
-        const CantidadDeCandidatos = (await Candidatos.findAll({ where: { Estado: true } })).length;
-        if (CantidadDeCandidatos >= 1) {
-            const eleccion = await Elecciones.create(body);
+        const CantidadDeCandidatos = (await Candidatos.findAll({ where: { Estado: true, Nombre: { [Op.not]: 'Ninguno' } } })).length;
+        if (CantidadDeCandidatos >= 2) {
+            await Elecciones.create(body);
             res.redirect('/admin/opcciones/elecciones');
         } else {
             req.flash("errors", 'No se pudo crear la eleccion, porque no hay suficientes candidatos activos o creados');

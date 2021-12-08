@@ -17,7 +17,6 @@ const Candidatos = sequelize.define('candidatos', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-
     puestoElectivoId: {
         type: DataTypes.NUMBER,
         allowNull: false,

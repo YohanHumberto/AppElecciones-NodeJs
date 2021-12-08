@@ -4,12 +4,14 @@
   "description": "Este es uno de los proyectos finales de programacion web",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yohan Humberto Rijo",
   "license": "ISC",
   "dependencies": {
     "connect-flash": "^0.1.1",
+    "csurf": "^1.11.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
