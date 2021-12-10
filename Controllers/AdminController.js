@@ -5,7 +5,7 @@ const Ciudadanos = require('../Models/Ciudadanos');
 const Candidatos = require('../Models/Candidatos');
 const Elecciones = require('../Models/Elecciones');
 const Votos = require('../Models/Votos');
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
 
 
 
@@ -299,7 +299,7 @@ exports.GetChangeEstadoPartidos = async (req, res, next) => {
         const partido = await Partidos.findByPk(id);
         if (partido) {
             if (partido.dataValues.Estado) {
-                const candidatosFromThisPartido = await Candidatos.findAll({ where: { Estado: true, PartidoId: partido.dataValues.Id, Nombre: { [Op.not]: '	Ninguno' } } });
+                const candidatosFromThisPartido = await Candidatos.findAll({ where: { Estado: true, PartidoId: partido.dataValues.Id, Nombre: { [Op.not]: 'Ninguno' } } });
                 candidatosFromThisPartido.forEach(async (element) => {
                     const candidato = await Candidatos.findByPk(element.dataValues.Id);
                     candidato.update({ Estado: false })
